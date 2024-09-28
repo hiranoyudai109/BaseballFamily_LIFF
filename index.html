@@ -47,7 +47,7 @@
             }
 
             // URLパラメーターを取得
-            const urlParams = new URLSearchParams(window.location.search);
+            const urlParams = new URLSearchParams(window.location.search).replace('?liff.state=', '');
             const phone = urlParams.get('phone');
             const email = urlParams.get('mail');
 
