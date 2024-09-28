@@ -162,7 +162,7 @@
         // メッセージを送信する関数
         async function sendMessage(text) {
             try {
-                await liff.sendMessages([{ type: "text", "LINE連携が完了しました！" }]);
+                await liff.sendMessages([{ type: "text", text: "LINE連携が完了しました👏" }]);
                 console.log("メッセージ送信成功");
             } catch (error) {
                 console.log("メッセージ送信エラー", error);
@@ -174,5 +174,3 @@
 
 </body>
 </html>
-
-
