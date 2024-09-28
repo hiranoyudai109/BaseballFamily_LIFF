@@ -53,6 +53,9 @@
             const phone = queryParams.get('phone'); // phoneを取得
             const email = urlParams.get('mail');
 
+            console.log(phone);
+            console.log(email);
+
             // パラメーターが存在すれば、フォームの初期値として設定
             if (phone) {
                 document.getElementById('phone').value = phone;
