@@ -121,9 +121,9 @@
                 const result = await submitForm(userId, phone);
                 if (result) {
                     alert('送信完了しました！');
-                    // メッセージを送信
-                    await sendMessage("LINE連携が完了しました");
                 }
+                // メッセージを送信
+                await sendMessage("LINE連携が完了しました");
                 // LIFFウィンドウを閉じる
                 liff.closeWindow();
             } else {
@@ -159,7 +159,7 @@
         // メッセージを送信する関数
         async function sendMessage(text) {
             try {
-                await liff.sendMessages([{ type: "text", text }]);
+                await liff.sendMessages([{ type: "text", "LINE連携が完了しました👏" }]);
                 console.log("メッセージ送信成功");
             } catch (error) {
                 console.log("メッセージ送信エラー", error);
@@ -171,5 +171,3 @@
 
 </body>
 </html>
-
-
