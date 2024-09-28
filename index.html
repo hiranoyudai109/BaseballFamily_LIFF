@@ -77,9 +77,9 @@
                     alert('送信完了しました！');
                     // メッセージを送信
                     await sendMessage("LINE連携が完了しました");
-                    // LIFFウィンドウを閉じる
-                    liff.closeWindow();
                 }
+                // LIFFウィンドウを閉じる
+                liff.closeWindow();
             } else {
                 alert("User IDが取得できませんでした。");
             }
@@ -115,7 +115,7 @@
         }
 
         // メッセージを送信する関数
-        async function sendMessage(text == "LINE連携が完了しました！") {
+        async function sendMessage(text) {
             try {
                 await liff.sendMessages([{ type: "text", text }]);
                 console.log("メッセージ送信成功");
