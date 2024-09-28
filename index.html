@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -27,7 +28,7 @@
 <body>
     <div id="qrcode">
         <form id="userForm">
-            <p>ver 1.1.1</p>
+            <p>ver 1.1</p>
             <input type="email" id="email" placeholder="メールアドレス" required>
             <input type="tel" id="phone" placeholder="電話番号" required>
             <button type="submit">送信</button>
@@ -61,11 +62,11 @@
                     alert('送信完了しました！');
                     // メッセージを送信
                     await sendMessage("LINE連携が完了しました");
+                    // LIFFウィンドウを閉じる
+                    liff.closeWindow();
                 } else {
                     alert('送信に失敗しました。');
                 }
-                // LIFFウィンドウを閉じる（送信処理後）
-                liff.closeWindow();
             } else {
                 alert("User IDが取得できませんでした。");
             }
@@ -79,20 +80,15 @@
             try {
                 const response = await fetch(scriptURL, {
                     method: 'POST',
-                    mode: 'no-cors', // CORSモードに変更
+                    mode: 'cors', // CORSモードに変更
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
 
-                // ステータスコードの確認
-                if (response.ok) {
-                    return true; // 送信成功
-                } else {
-                    console.error('送信に失敗しました:', response.statusText);
-                    return false; // 送信失敗
-                }
+                console.error('LINE連携が完了しました!');
+
             } catch (error) {
                 console.error('Error!', error);
                 return false; // エラーが発生した場合
