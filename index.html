@@ -82,8 +82,7 @@
                 liff.closeWindow();
                 
                 // メッセージを送信
-                if (liff.isApiAvailable('shareTargetPicker')) {
-                    liff.shareTargetPicker([
+                    liff.sendMessages([
                         {
                             type: "text",
                             text: "LINE連携が完了しました"
