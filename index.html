@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
 <head>
@@ -28,7 +27,6 @@
 <body>
     <div id="qrcode">
         <form id="userForm">
-            <p>ver 1.1.2</p>
             <input type="email" id="email" placeholder="メールアドレス" required>
             <input type="tel" id="phone" placeholder="電話番号" required>
             <button type="submit">送信</button>
@@ -47,6 +45,19 @@
                 const profile = await liff.getProfile();
                 userId = profile.userId; // userIdを取得して保持する
             }
+
+            // URLパラメーターを取得
+            const urlParams = new URLSearchParams(window.location.search);
+            const phone = urlParams.get('phone');
+            const email = urlParams.get('mail');
+
+            // パラメーターが存在すれば、フォームの初期値として設定
+            if (phone) {
+                document.getElementById('phone').value = phone;
+            }
+            if (email) {
+                document.getElementById('email').value = email;
+            }
         }
 
         // フォームの送信処理
@@ -58,15 +69,12 @@
             if (userId) {
                 const result = await submitForm(userId, email, phone);
                 if (result) {
-                    // 送信完了のアラート
                     alert('送信完了しました！');
                     // メッセージを送信
                     await sendMessage("LINE連携が完了しました");
-                } else {
-                    alert('送信に失敗しました。');
+                    // LIFFウィンドウを閉じる
+                    liff.closeWindow();
                 }
-                // LIFFウィンドウを閉じる
-                liff.closeWindow();
             } else {
                 alert("User IDが取得できませんでした。");
             }
@@ -74,29 +82,35 @@
 
         // データをスプレッドシートに送信する関数
         async function submitForm(userId, email, phone) {
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbxT2i0EQ0MQEqK18QkFssieaNEiJCGZCFsAtFM-xVUMg83NQSGE91x-GyYXer2fuy5Z/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyJbYQ4oTFBIdDw76ozilJaPMS8Nkf0MiNQ7IrC2p4RYeaXGehn8u6Nv2Rqgo416vNq/exec';
             const data = { userId, email, phone };
 
             try {
                 const response = await fetch(scriptURL, {
                     method: 'POST',
-                    mode: 'no-cors', // no-corsモードに変更
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify(data)
                 });
 
-                console.error('LINE連携が完了しました!');
-
+                // 応答が正常であることを確認
+                if (response.ok) {
+                    return true;
+                } else {
+                    alert('送信に失敗しました。');
+                    return false;
+                }
             } catch (error) {
                 console.error('Error!', error);
-                return false; // エラーが発生した場合
+                alert('送信中にエラーが発生しました。');
+                return false;
             }
         }
 
         // メッセージを送信する関数
-        async function sendMessage(text) {
+        async function sendMessage(text == "LINE連携が完了しました！") {
             try {
                 await liff.sendMessages([{ type: "text", text }]);
                 console.log("メッセージ送信成功");
