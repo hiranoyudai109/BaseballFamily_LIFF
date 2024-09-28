@@ -4,22 +4,14 @@
     <title>LINE LIFF</title>
     <script src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
     <style>
-        #qrcode {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-        }
         form {
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
-        input {
-            margin: 10px;
-            padding: 8px;
-            font-size: 16px;
+        .text-gray {
+            color: #333;
         }
     </style>    
 </head>
@@ -27,7 +19,7 @@
 <body>
     <div id="qrcode">
         <form id="userForm">
-            <input type="tel" id="phone" placeholder="電話番号" required>
+            <p class="text-gray" id="phoneDisplay"></p>
             <button type="submit">LIEN連携を完了する</button>
         </form>
     </div>
@@ -52,9 +44,9 @@
             const phone = queryParams.get('phone'); // phoneを取得
 
             // パラメーターが存在すれば、フォームの初期値として設定
-            if (phone) {
-                document.getElementById('phone').value = phone;
-            }
+                if (phone) {
+                    document.getElementById('phoneDisplay').textContent = '電話番号: ' + phone;
+                }
         }
 
         // フォームの送信処理
@@ -120,3 +112,5 @@
 
 </body>
 </html>
+
+
