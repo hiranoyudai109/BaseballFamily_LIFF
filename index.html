@@ -74,12 +74,7 @@
                     },
                     body: JSON.stringify(data)
                 });
-
-                if (response.ok) {
-                    alert('送信完了しました！');
-                } else {
-                    alert('送信に失敗しました。');
-                }
+                alert('送信完了しました！');
             } catch (error) {
                 console.error('Error!', error);
                 alert('送信中にエラーが発生しました。');
