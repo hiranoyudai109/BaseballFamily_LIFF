@@ -84,7 +84,7 @@
 
                 // 応答が正常であることを確認
                 if (response.ok) {
-                    return true;
+                    return alert('アカウント連携が完了しました！');
                 } else {
                     alert('送信に失敗しました。');
                     return false;
@@ -93,16 +93,6 @@
                 console.error('Error!', error);
                 alert('送信中にエラーが発生しました。');
                 return false;
-            }
-        }
-
-        // メッセージを送信する関数
-        async function sendMessage( text == "LINE連携が完了しました！") {
-            try {
-                await liff.sendMessages([{ type: "text", text }]);
-                console.log("メッセージ送信成功");
-            } catch (error) {
-                console.log("メッセージ送信エラー", error);
             }
         }
 
