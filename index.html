@@ -62,13 +62,13 @@
 
         // データをスプレッドシートに送信する関数
         async function submitForm(userId, email, phone) {
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyJbYQ4oTFBIdDw76ozilJaPMS8Nkf0MiNQ7IrC2p4RYeaXGehn8u6Nv2Rqgo416vNq/exec';
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxT2i0EQ0MQEqK18QkFssieaNEiJCGZCFsAtFM-xVUMg83NQSGE91x-GyYXer2fuy5Z/exec';
             const data = { userId, email, phone };
 
             try {
                 const response = await fetch(scriptURL, {
                     method: 'POST',
-                    // mode: 'no-cors',
+                    mode: 'no-cors',
                     headers: {
                         'Content-Type': 'application/json'
                     },
