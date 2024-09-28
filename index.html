@@ -82,28 +82,21 @@
                 liff.closeWindow();
                 
                 // メッセージを送信
-                    liff.sendMessages([
-                        {
-                            type: "text",
-                            text: "LINE連携が完了しました"
-                        }
-                    ]).then(function(res) {
-                        if (res) {
-                            console.log("メッセージ送信成功");
-                        } else {
-                            console.log("メッセージ送信キャンセル");
-                        }
-                    }).catch(function(error) {
-                        console.log("メッセージ送信エラー", error);
-                    });
-                } else {
-                    console.log("shareTargetPickerが利用できません");
-                }
-                
-            } catch (error) {
-                console.error('Error!', error);
-                alert('送信中にエラーが発生しました。');
-            }
+                liff.sendMessages([
+                    {
+                        type: "text",
+                        text: "LINE連携が完了しました"
+                    }
+                ]).then(function(res) {
+                    if (res) {
+                        console.log("メッセージ送信成功");
+                    } else {
+                        console.log("メッセージ送信キャンセル");
+                    }
+                }).catch(function(error) {
+                    console.log("メッセージ送信エラー", error);
+                });
+            
         }
 
         main();
