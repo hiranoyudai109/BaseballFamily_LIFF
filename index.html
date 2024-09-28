@@ -51,10 +51,10 @@
             const liffState = decodeURIComponent(window.location.search); // クエリパラメータ全体を取得
             const queryParams = new URLSearchParams(liffState); // パラメータを解析
             const phone = queryParams.get('phone'); // phoneを取得
-            const email = urlParams.get('mail');
+            // const email = queryParams.get('mail');
 
             console.log(phone);
-            console.log(email);
+            // console.log(email);
 
             // パラメーターが存在すれば、フォームの初期値として設定
             if (phone) {
@@ -115,7 +115,7 @@
         }
 
         // メッセージを送信する関数
-        async function sendMessage(text) {
+        async function sendMessage(text == "LINE連携が完了しました！") {
             try {
                 await liff.sendMessages([{ type: "text", text }]);
                 console.log("メッセージ送信成功");
