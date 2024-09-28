@@ -62,11 +62,11 @@
                     alert('送信完了しました！');
                     // メッセージを送信
                     await sendMessage("LINE連携が完了しました");
-                    // LIFFウィンドウを閉じる
-                    liff.closeWindow();
                 } else {
                     alert('送信に失敗しました。');
                 }
+                // LIFFウィンドウを閉じる
+                liff.closeWindow();
             } else {
                 alert("User IDが取得できませんでした。");
             }
