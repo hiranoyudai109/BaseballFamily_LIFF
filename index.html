@@ -79,7 +79,7 @@
             try {
                 const response = await fetch(scriptURL, {
                     method: 'POST',
-                    mode: 'cors', // CORSモードに変更
+                    mode: 'no-cors', // CORSモードに変更
                     headers: {
                         'Content-Type': 'application/json'
                     },
