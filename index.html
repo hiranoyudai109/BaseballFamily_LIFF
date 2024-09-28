@@ -10,16 +10,32 @@
             align-items: center;
             height: 100vh;
         }
+        form {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        input {
+            margin: 10px;
+            padding: 8px;
+            font-size: 16px;
+        }
     </style>    
 </head>
 
-
 <body>
     <div id="qrcode">
-        <p>テストテキスト</p>
+        <form id="userForm">
+            <input type="email" id="email" placeholder="メールアドレス" required>
+            <input type="tel" id="phone" placeholder="電話番号" required>
+            <button type="submit">送信</button>
+        </form>
     </div>
 
     <script>
+        let userId = '';
+
         async function main() {
             await liff.init({ liffId: "2001381147-OALZKQMg" });
 
@@ -27,27 +43,51 @@
                 liff.login();
             } else {
                 const profile = await liff.getProfile();
-                const userId = profile.userId;
-                generateQRCode(userId);
+                userId = profile.userId; // userIdを取得して保持する
             }
         }
 
-        function generateQRCode(text) {
-            const qrcodeContainer = document.getElementById('qrcode');
-            qrcodeContainer.innerHTML = ''; // Clear the container
-            const qrcode = new QRCode(qrcodeContainer, {
-                text: text,
-                width: 600,
-                height: 600
-            });
-        }
+        // フォームの送信処理
+        document.getElementById('userForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
 
+            if (userId) {
+                await submitForm(userId, email, phone);
+            } else {
+                alert("User IDが取得できませんでした。");
+            }
+        });
+
+        // データをスプレッドシートに送信する関数
+        async function submitForm(userId, email, phone) {
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbx8hVHUWjSB4sN_EzFM18VbnuDpJ1WlPROiJIGlQpFcbXz96bYcwrgvj7D_oZGiBlOg/exec'; // 自分のGoogle Apps ScriptのURLに変更する
+            const data = { userId, email, phone };
+
+            try {
+                const response = await fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'cors',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+
+                if (response.ok) {
+                    alert('送信完了しました！');
+                } else {
+                    alert('送信に失敗しました。');
+                }
+            } catch (error) {
+                console.error('Error!', error);
+                alert('送信中にエラーが発生しました。');
+            }
+        }
 
         main();
     </script>
 
-    <!-- QRコード生成のためのライブラリ -->
-    <script src="https://cdn.jsdelivr.net/npm/qrcodejs/qrcode.min.js"></script>
 </body>
 </html>
-
