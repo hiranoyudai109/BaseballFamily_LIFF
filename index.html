@@ -122,10 +122,6 @@
                 if (result) {
                     alert('送信完了しました！');
                 }
-                // メッセージを送信
-                await sendMessage("LINE連携が完了しました");
-                // LIFFウィンドウを閉じる
-                liff.closeWindow();
             } else {
                 alert("User IDが取得できませんでした。");
             }
@@ -146,8 +142,12 @@
                     body: JSON.stringify(data)
                 });
 
+                // メッセージを送信
+                await sendMessage("LINE連携が完了しました");
                 // 応答が正常であることを確認
                 alert('LINE連携が完了しました！');
+                // LIFFウィンドウを閉じる
+                liff.closeWindow();
                     
             } catch (error) {
                 console.error('Error!', error);
