@@ -47,8 +47,10 @@
             }
 
             // URLパラメーターを取得
-            const urlParams = new URLSearchParams(window.location.search).replace('?liff.state=', '');
-            const phone = urlParams.get('phone');
+            // LIFF stateからパラメータを取得
+            const liffState = decodeURIComponent(window.location.search); // クエリパラメータ全体を取得
+            const queryParams = new URLSearchParams(liffState); // パラメータを解析
+            const phone = queryParams.get('phone'); // phoneを取得
             const email = urlParams.get('mail');
 
             // パラメーターが存在すれば、フォームの初期値として設定
