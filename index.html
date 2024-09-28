@@ -27,9 +27,8 @@
 <body>
     <div id="qrcode">
         <form id="userForm">
-            <input type="email" id="email" placeholder="メールアドレス" required>
             <input type="tel" id="phone" placeholder="電話番号" required>
-            <button type="submit">送信</button>
+            <button type="submit">LIEN連携を完了する</button>
         </form>
     </div>
 
@@ -51,28 +50,20 @@
             const liffState = decodeURIComponent(window.location.search); // クエリパラメータ全体を取得
             const queryParams = new URLSearchParams(liffState); // パラメータを解析
             const phone = queryParams.get('phone'); // phoneを取得
-            // const email = queryParams.get('mail');
-
-            console.log(phone);
-            // console.log(email);
 
             // パラメーターが存在すれば、フォームの初期値として設定
             if (phone) {
                 document.getElementById('phone').value = phone;
-            }
-            if (email) {
-                document.getElementById('email').value = email;
             }
         }
 
         // フォームの送信処理
         document.getElementById('userForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const email = document.getElementById('email').value;
             const phone = document.getElementById('phone').value;
 
             if (userId) {
-                const result = await submitForm(userId, email, phone);
+                const result = await submitForm(userId, phone);
                 if (result) {
                     alert('送信完了しました！');
                     // メッセージを送信
@@ -86,9 +77,9 @@
         });
 
         // データをスプレッドシートに送信する関数
-        async function submitForm(userId, email, phone) {
-            const scriptURL = 'https://script.google.com/macros/s/AKfycbyJbYQ4oTFBIdDw76ozilJaPMS8Nkf0MiNQ7IrC2p4RYeaXGehn8u6Nv2Rqgo416vNq/exec';
-            const data = { userId, email, phone };
+        async function submitForm(userId, phone) {
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbxT2i0EQ0MQEqK18QkFssieaNEiJCGZCFsAtFM-xVUMg83NQSGE91x-GyYXer2fuy5Z/exec';
+            const data = { userId, phone };
 
             try {
                 const response = await fetch(scriptURL, {
