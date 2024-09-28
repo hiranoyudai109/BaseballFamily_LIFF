@@ -97,7 +97,7 @@
         }
 
         // メッセージを送信する関数
-        async function sendMessage(text) {
+        async function sendMessage( text == "LINE連携が完了しました！") {
             try {
                 await liff.sendMessages([{ type: "text", text }]);
                 console.log("メッセージ送信成功");
