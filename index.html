@@ -69,6 +69,15 @@
         button:active {
         transform: translateY(1px);
         }
+
+        /* New style for the loading message */
+        #loadingMessage {
+            display: none;
+            color: #666;
+            text-align: center;
+            margin-top: 1rem;
+            font-style: italic;
+        }
     </style>    
 </head>
 
@@ -83,11 +92,12 @@
                 <h2>電話番号</h2>
                 <p class="phone-number" id="phoneDisplay"></p>
                 <button class="btn" type="submit">LIEN連携を完了する</button>
+                <p id="loadingMessage">連携中...</p>
             </form>
         </main>
     </div>
 
-    <script>
+<script>
         let userId = '';
 
         async function main() {
@@ -97,29 +107,35 @@
                 liff.login();
             } else {
                 const profile = await liff.getProfile();
-                userId = profile.userId; // userIdを取得して保持する
+                userId = profile.userId;
             }
 
-            // URLパラメーターを取得
-            // LIFF stateからパラメータを取得
-            const liffState = decodeURIComponent(window.location.search); // クエリパラメータ全体を取得
-            const queryParams = new URLSearchParams(liffState); // パラメータを解析
-            const phone = queryParams.get('phone'); // phoneを取得
+            const liffState = decodeURIComponent(window.location.search);
+            const queryParams = new URLSearchParams(liffState);
+            const phone = queryParams.get('phone');
 
-            // パラメーターが存在すれば、フォームの初期値として設定
-                if (phone) {
-                    document.getElementById('phoneDisplay').textContent = phone;
-                }
+            if (phone) {
+                document.getElementById('phoneDisplay').textContent = phone;
+            }
         }
 
-        // フォームの送信処理
         document.getElementById('userForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             const phone = document.getElementById('phoneDisplay').textContent;
-            
+            const submitButton = document.getElementById('submitButton');
+            const loadingMessage = document.getElementById('loadingMessage');
 
             if (userId) {
+                // Show loading message and disable button
+                loadingMessage.style.display = 'block';
+                submitButton.disabled = true;
+
                 const result = await submitForm(userId, phone);
+                
+                // Hide loading message and enable button
+                loadingMessage.style.display = 'none';
+                submitButton.disabled = false;
+
                 if (result) {
                     alert('送信完了しました！');
                 }
@@ -128,7 +144,6 @@
             }
         });
 
-        // データをスプレッドシートに送信する関数
         async function submitForm(userId, phone) {
             const scriptURL = 'https://script.google.com/macros/s/AKfycbxrOOHHNa7jfnexQG1OSVNXv1sucntdfh1ThOSQtRrOVeZjg3SYCiV7SxhoeEyEoaCd/exec';
             const data = { userId, phone };
@@ -143,15 +158,10 @@
                     body: JSON.stringify(data)
                 });
 
-                // メッセージを送信
-                sendMessage("LINE連携が完了しました");
-
-                // 応答が正常であることを確認
+                await sendMessage("LINE連携が完了しました");
                 alert('LINE連携が完了しました！');
-
-                // LIFFウィンドウを閉じる
                 liff.closeWindow();
-                    
+                return true;
             } catch (error) {
                 console.error('Error!', error);
                 alert('送信中にエラーが発生しました。');
@@ -159,7 +169,6 @@
             }
         }
 
-        // メッセージを送信する関数
         async function sendMessage(text) {
             try {
                 await liff.sendMessages([{ type: "text", text: "LINE連携が完了しました👏" }]);
@@ -171,6 +180,7 @@
 
         main();
     </script>
-
 </body>
 </html>
+
+
