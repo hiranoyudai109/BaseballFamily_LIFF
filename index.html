@@ -70,13 +70,28 @@
         transform: translateY(1px);
         }
 
-        /* New style for the loading message */
+        /* 連携中...のスタイル */
         #loadingMessage {
             display: none;
             color: #666;
             text-align: center;
             margin-top: 1rem;
             font-style: italic;
+        }
+        
+        /* ボタンの無効化スタイル */
+        button:disabled {
+            background-color: #cccccc;
+            cursor: not-allowed;
+        }
+
+        /* 成功メッセージのスタイル */
+        #successMessage {
+            display: none;
+            color: #4CAF50;
+            text-align: center;
+            margin-top: 1rem;
+            font-weight: bold;
         }
     </style>    
 </head>
@@ -93,6 +108,7 @@
                 <p class="phone-number" id="phoneDisplay"></p>
                 <button class="btn" type="submit">LIEN連携を完了する</button>
                 <p id="loadingMessage">連携中...</p>
+                <p id="successMessage">LINE連携が完了しました！</p>
             </form>
         </main>
     </div>
@@ -124,20 +140,32 @@
             const phone = document.getElementById('phoneDisplay').textContent;
             const submitButton = document.getElementById('submitButton');
             const loadingMessage = document.getElementById('loadingMessage');
+            const successMessage = document.getElementById('successMessage');
 
             if (userId) {
-                // Show loading message and disable button
-                loadingMessage.style.display = 'block';
+                // ボタンを無効化し、スタイルを変更
                 submitButton.disabled = true;
+                submitButton.style.backgroundColor = '#cccccc';
+                submitButton.style.cursor = 'not-allowed';
+
+                // ローディングメッセージを表示
+                loadingMessage.style.display = 'block';
 
                 const result = await submitForm(userId, phone);
                 
-                // Hide loading message and enable button
+                // ローディングメッセージを非表示
                 loadingMessage.style.display = 'none';
-                submitButton.disabled = false;
 
                 if (result) {
-                    alert('送信完了しました！');
+                    // 成功メッセージを表示
+                    successMessage.style.display = 'block';
+                    // 2秒後にウィンドウを閉じる
+                    setTimeout(() => {
+                        liff.closeWindow();
+                    }, 2000);
+                } else {
+                    // エラーが発生した場合でも、ボタンは無効のままにする
+                    alert('送信中にエラーが発生しました。ページを再読み込みしてください。');
                 }
             } else {
                 alert("User IDが取得できませんでした。");
@@ -159,12 +187,9 @@
                 });
 
                 await sendMessage("LINE連携が完了しました");
-                alert('LINE連携が完了しました！');
-                liff.closeWindow();
                 return true;
             } catch (error) {
                 console.error('Error!', error);
-                alert('送信中にエラーが発生しました。');
                 return false;
             }
         }
@@ -182,5 +207,3 @@
     </script>
 </body>
 </html>
-
-
